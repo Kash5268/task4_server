@@ -18,7 +18,7 @@ const pool = new Pool(config);
 
 
 app.use(cors({
-  origin: "http://localhost:5173", // frontend
+  origin: "https://boisterous-mochi-43c668.netlify.app", // frontend
   credentials: true,
 }));
 
