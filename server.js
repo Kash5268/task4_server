@@ -107,6 +107,7 @@ app.patch("/api/forgot-password", async (req, res) => {
 // For table
 app.post("/api/users", async (req, res) => {
   const { user } = req.body;
+  console.log(user)
   if (user) return res.sendStatus(401);
   const { rows } = await pool.query(
     "SELECT id, name, email, status, last_login FROM users ORDER BY id ASC"
