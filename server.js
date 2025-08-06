@@ -8,6 +8,7 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+app.set("trust proxy", 1);
 
 const config = {
   connectionString: process.env.DATABASE_URL,
@@ -23,6 +24,7 @@ app.use(
 );
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     secret: process.env.secret,
@@ -31,6 +33,8 @@ app.use(
     cookie: {
       sameSite: "none",
       secure: true,
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
     },
   })
 );
@@ -108,7 +112,7 @@ app.patch("/api/forgot-password", async (req, res) => {
 app.post("/api/users", async (req, res) => {
   const { user } = req.body;
   console.log(user)
-  if (user) return res.sendStatus(401);
+  if (!user) return res.sendStatus(401);
   const { rows } = await pool.query(
     "SELECT id, name, email, status, last_login FROM users ORDER BY id ASC"
   );
